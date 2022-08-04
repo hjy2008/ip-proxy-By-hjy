@@ -31,6 +31,7 @@
 代码块：
 
 ```python
+import requests
 # range(a, b)：从a开始，在b前停止
 for i in range(1, 4707):
     # str 进行格式转换
