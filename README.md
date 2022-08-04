@@ -174,7 +174,7 @@ def getIp():
 
 def check(ip, port):
     list_ = set(())
-    with open('./ip.txt', 'a') as f:
+    with open('./ip.txt', 'w') as f:
         for i in range(0, len(ip)):
             proxies = {
                 'https': f'http://{ip[i]}:{port[i]}/',
