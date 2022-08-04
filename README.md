@@ -191,18 +191,7 @@ def check(ip, port):
 
             response = re.findall(r'<span class="c-red">(.*?)</span>',
                                   requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 1.5).text)
-            if 'seccess' in response:
-
-                with open('ip.txt', 'r') as r:
-                    for line in r.readlines():
-                        list_.add(line)
-                list_.add(str(proxies) + '\n')
-                # print(list_)
-                for abc in list_:
-                    # print(abc)
-                    pass
-                print('Success!')
-            elif len(response) == 2:
+            if len(response) == 2:
                 with open('ip.txt', 'r') as r:
                     for line in r.readlines():
                         list_.add(line)
