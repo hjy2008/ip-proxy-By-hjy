@@ -12,15 +12,15 @@
 
 在网上随便找一个[代理ip](https://free.kuaidaili.com/free/inha/1/)，如图
 
-![快代理ip](img/1.jpg)
+<div align=center><img src="img/1.jpg" style="zoom:100%" title="快代理ip"/></div>
 
 ### 2.网站分析
 
 通过不断切换页面，观察网址（又叫 url/uri）的变化
 
-![](img/2.jpg)
+<div align=center><img src="img/2.jpg" style="zoom:100%" /></div>
 
-![](img/3.jpg)
+<div align=center><img src="img/3.jpg" style="zoom:100%;" /></div>
 
 可以看出变化的部分是 "{}" 部分 `https://free.kuaidaili.com/free/inha/{}/`
 
@@ -46,7 +46,11 @@ for i in range(1, 4707):
 通过右键=>复制=>复制 `xpath`，再手动修改得到 `//*[@id="list"]/table/tbody/tr/td[@data-title="IP"]/text()`这样就得到了ip的xpath
 同理可得：port的xpath `//*[@id="list"]/table/tbody/tr/td[@data-title="PORT"]/text()`
 同理可得：类型的xpath `//*[@id="list"]/table/tbody/tr/td[@data-title="类型"]/text()`
-![](img/4.jpg)
+
+<div align=center><img src="img/4.jpg" style="zoom:100%;" /></div>
+
+
+
 ```python
 import requests
 import parsel
@@ -119,8 +123,11 @@ getIp()
 
 ### 4.检查
 [ip地址查询网站](http://dev.kdlapi.com/testproxy)
-![](img/5.jpg)
+
+<div align=center><img src="img/5.jpg" style="zoom:100%;" /></div>
+
 通过爬虫，检查是否为代理ip
+
 ```python
 def check(ip, port):
     for i in range(0, len(ip)):
@@ -144,7 +151,11 @@ def check(ip, port):
             print('Error')
 ```
 测试成功截图
-![](img/6.jpg)
+
+<div align=center><img src="img/6.jpg" style="zoom:100%;" /></div>
+
+
+
 ## 三.再做一点点完善
 ```python
 import re
@@ -185,10 +196,7 @@ def check(ip, port):
         # print(proxies)
 
         try:
-            # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
-            # response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 30) \
-            #     .text.replace(' ', '').split(':')[-1]
-
+            
             response = re.findall(r'<span class="c-red">(.*?)</span>',
                                   requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 1.5).text)
             if len(response) == 2:
@@ -208,4 +216,6 @@ def check(ip, port):
 getIp()
 ```
 # 感谢观看
-![](img/yun.png)
+<div align=center><img src="img/yun.png" style="zoom:80%;"/></div>
+<div align=center><a src="https://blog.csdn.net/weixin_46598546"><h1>个人博客</h1></a></div>
+
