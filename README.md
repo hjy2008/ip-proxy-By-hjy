@@ -186,13 +186,28 @@ def check(ip, port):
             # response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 30) \
             #   .text.replace(' ', '').split(':')[-1]
             with open('./ip.txt', 'a') as f:
-                response = re.findall(r'<span class="c-red">(.*?)</span>', requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 30).text)
+                response = re.findall(r'<span class="c-red">(.*?)</span>',
+                                      requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 30).text)
                 if 'seccess' in response:
+                    list_ = set(())
                     can.append(proxies)
-                    f.write(str(proxies))
+                    with open('ip.txt', 'r') as r:
+                        for line in r.readlines():
+                            list_.add(line)
+                    list_.add(str(proxies) + '\n')
+                    for _ in list_:
+                        f.write(_)
+                    can.append(proxies)
                     print('Success!')
                 elif len(response) == 2:
-                    f.write(str(proxies))
+                    list_ = set(())
+                    can.append(proxies)
+                    with open('ip.txt', 'r') as r:
+                        for line in r.readlines():
+                            list_.add(line)
+                    list_.add(str(proxies) + '\n')
+                    for _ in list_:
+                        f.write(_)
                     can.append(proxies)
                     print(response)
         except requests.exceptions.ProxyError:
