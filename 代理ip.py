@@ -34,14 +34,18 @@ def check(ip, port):
         try:
             # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
             # response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 30) \
-             #   .text.replace(' ', '').split(':')[-1]
-            response = re.findall(r'<span class="c-red">(.*?)</span>', requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 30).text)
-            if 'seccess' in response:
-                can.append(proxies)
-                print('Success!')
-            elif len(response) == 2:
-                can.append(proxies)
-                print(response)
+            #   .text.replace(' ', '').split(':')[-1]
+            with open('./ip.txt', 'a') as f:
+                response = re.findall(r'<span class="c-red">(.*?)</span>',
+                                      requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 30).text)
+                if 'seccess' in response:
+                    can.append(proxies)
+                    f.write(proxies)
+                    print('Success!')
+                elif len(response) == 2:
+                    f.write(proxies)
+                    can.append(proxies)
+                    print(response)
         except requests.exceptions.ProxyError:
             print('pass')
         except requests.exceptions.ReadTimeout:
@@ -49,8 +53,6 @@ def check(ip, port):
         except requests.exceptions.ConnectTimeout:
             print('Error')
     pprint(can)
-    with open('./ip.txt', 'a') as f:
-        f.write(can)
 
 
 getIp()
