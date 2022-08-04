@@ -16,13 +16,29 @@ def getIp():
         ip = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="IP"]/text()').getall()
         port = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="PORT"]/text()').getall()
         print(ip, port)
+        check(ip, port)
         sleep(0.5)
 
 
 def check(ip, port):
-    proxies = {
-        'http': f'http://{ip}:{port}'
-    }
+    for i in range(0, len(ip)):
+        proxies = {
+            'https': f'http://{ip[i]}:{port[i]}/',
+            'http': f'http://{ip[i]}:{port[i]}/'
+        }
+        print(proxies)
+
+        try:
+            print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
+            response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20) \
+                .text.replace(' ', '').split(':')[-1]
+            print('Success!')
+        except requests.exceptions.ProxyError:
+            print('pass')
+        except requests.exceptions.ReadTimeout:
+            print('Error')
+        except requests.exceptions.ConnectTimeout:
+            print('Error')
 
 
 getIp()

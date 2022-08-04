@@ -45,6 +45,7 @@ for i in range(1, 4707):
 ### 3.信息提取
 通过右键=>复制=>复制 `xpath`，再手动修改得到 `//*[@id="list"]/table/tbody/tr/td[@data-title="IP"]/text()`这样就得到了ip的xpath
 同理可得：port的xpath `//*[@id="list"]/table/tbody/tr/td[@data-title="PORT"]/text()`
+同理可得：类型的xpath `//*[@id="list"]/table/tbody/tr/td[@data-title="类型"]/text()`
 ![](img/4.jpg)
 ```python
 import requests
@@ -117,10 +118,29 @@ getIp()
 ```
 
 ### 4.检查
-[ip地址查询网站](http://mip.chinaz.com/)
+[ip地址查询网站](http://dev.kdlapi.com/testproxy)
 ![](img/5.jpg)
-可以显示当前ip
 通过爬虫，检查是否为代理ip
 ```python
+def check(ip, port):
+    for i in range(0, len(ip)):
+        proxies = {
+            'https': f'http://{ip[i]}:{port[i]}/',
+            'http': f'http://{ip[i]}:{port[i]}/'
+        }
+        print(proxies)
 
+        try:
+            print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
+            response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20) \
+                .text.replace(' ', '').split(':')[-1]
+            print('Success!')
+        except requests.exceptions.ProxyError:
+            print('pass')
+        except requests.exceptions.ReadTimeout:
+            print('Error')
+        except requests.exceptions.ConnectTimeout:
+            print('Error')
 ```
+测试成功截图
+![](img/6.jpg)
