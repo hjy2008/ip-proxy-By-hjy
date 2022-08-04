@@ -217,4 +217,4 @@ def check(ip, port):
 getIp()
 ```
 # 感谢观看
-<div align=center><img src="img/yun.png" style="zoom:80%;"/></div>
+<div align=center><img src="img/yun.jpg" style="zoom:80%;"/></div>
