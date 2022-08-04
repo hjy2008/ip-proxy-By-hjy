@@ -168,54 +168,54 @@ def getIp():
         ip = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="IP"]/text()').getall()
         port = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="PORT"]/text()').getall()
         print(ip, port)
-        check(ip, port)
+        with open('./ip.txt', 'a') as f:
+            for j in check(ip, port):
+                f.write(j)
         sleep(0.5)
 
 
 def check(ip, port):
     list_ = set(())
-    with open('./ip.txt', 'w') as f:
-        for i in range(0, len(ip)):
-            proxies = {
-                'https': f'http://{ip[i]}:{port[i]}/',
-                'http': f'http://{ip[i]}:{port[i]}/'
-            }
-            print(proxies)
+    for i in range(0, len(ip)):
+        proxies = {
+            'https': f'http://{ip[i]}:{port[i]}/',
+            'http': f'http://{ip[i]}:{port[i]}/'
+        }
+        print(proxies)
 
-            try:
-                # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
-                # response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 30) \
-                #     .text.replace(' ', '').split(':')[-1]
+        try:
+            # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
+            # response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 30) \
+            #     .text.replace(' ', '').split(':')[-1]
 
-                response = re.findall(r'<span class="c-red">(.*?)</span>',
-                                      requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 10).text)
-                if 'seccess' in response:
+            response = re.findall(r'<span class="c-red">(.*?)</span>',
+                                  requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 1).text)
+            if 'seccess' in response:
 
-                    with open('ip.txt', 'r') as r:
-                        for line in r.readlines():
-                            list_.add(line)
-                    list_.add(str(proxies) + '\n')
-                    print(list_)
-                    for abc in list_:
-                        f.write(abc)
-                    print('Success!')
-                elif len(response) == 2:
-                    with open('ip.txt', 'r') as r:
-                        for line in r.readlines():
-                            list_.add(line)
-                    list_.add(str(proxies) + '\n')
-                    print(list_)
-                    for abc in list_:
-                        print(abc)
-                        f.write(abc)
-                    print(response)
-            except requests.exceptions.ProxyError:
-                print('pass')
-            except requests.exceptions.ReadTimeout:
-                print('Error')
-            except requests.exceptions.ConnectTimeout:
-                print('Error')
-    pprint(list_)
+                with open('ip.txt', 'r') as r:
+                    for line in r.readlines():
+                        list_.add(line)
+                list_.add(str(proxies) + '\n')
+                print(list_)
+                for abc in list_:
+                    print(abc)
+                print('Success!')
+            elif len(response) == 2:
+                with open('ip.txt', 'r') as r:
+                    for line in r.readlines():
+                        list_.add(line)
+                list_.add(str(proxies) + '\n')
+                print(list_)
+                for abc in list_:
+                    print(abc)
+                print(response)
+        except requests.exceptions.ProxyError:
+            print('pass')
+        except requests.exceptions.ReadTimeout:
+            print('Error')
+        except requests.exceptions.ConnectTimeout:
+            print('Error')
+    return list_
 
 
 getIp()
