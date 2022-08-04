@@ -149,14 +149,13 @@ def check(ip, port):
 ## 三.再做一点点完善
 ```python
 import re
-from pprint import pprint
 from time import sleep
 
 import parsel
 import requests
 
 
-def getIp():
+def getIp(f):
     for i in range(1, 4707):
         url = f'https://free.kuaidaili.com/free/inha/{str(i)}/'
         headers = {
@@ -168,9 +167,8 @@ def getIp():
         ip = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="IP"]/text()').getall()
         port = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="PORT"]/text()').getall()
         print(ip, port)
-        with open('./ip.txt', 'a') as f:
-            for j in check(ip, port):
-                f.write(j)
+        for j in check(ip, port):
+            f.write(j)
         sleep(0.5)
 
 
@@ -218,5 +216,6 @@ def check(ip, port):
     return list_
 
 
-getIp()
+with open('./ip.txt', 'w') as f:
+    getIp(f)
 ```
