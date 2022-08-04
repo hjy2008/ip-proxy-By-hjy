@@ -93,6 +93,61 @@ requests.exceptions.TooManyRedirects: Exceeded 30 redirects.
 ```
 `requests.exceptions.TooManyRedirects: Exceeded 30 redirects.`翻译过来就是 `超过 30 个重定向` 是网站的一种反爬机制，加上延时就行了
 ```python
+import requests
+import parsel
+from time import sleep
+
+
+def getIp():
+    for i in range(1, 4707):
+        url = f'https://free.kuaidaili.com/free/inha/{str(i)}/'
+        headers = {
+            'User-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+        }
+        response = requests.get(url, headers = headers).text
+        selector = parsel.Selector(response)
+        ip = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="IP"]/text()').getall()
+        port = selector.xpath('//*[@id="list"]/table/tbody/tr/td[@data-title="PORT"]/text()').getall()
+        print(ip, port)
+        # 经过测试，最短间隔时间是0.5s
+        sleep(0.5)
+
+
+getIp()
+```
+
+### 4.检查
+[ip地址查询网站](http://dev.kdlapi.com/testproxy)
+![](img/5.jpg)
+通过爬虫，检查是否为代理ip
+```python
+def check(ip, port):
+    for i in range(0, len(ip)):
+        proxies = {
+            'https': f'http://{ip[i]}:{port[i]}/',
+            'http': f'http://{ip[i]}:{port[i]}/'
+        }
+        print(proxies)
+
+        try:
+            # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
+            response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20) \
+                .text.replace(' ', '').split(':')[-1]
+
+            if 'seccess' in response:
+                print('Success!')
+        except requests.exceptions.ProxyError:
+            print('pass')
+        except requests.exceptions.ReadTimeout:
+            print('Error')
+        except requests.exceptions.ConnectTimeout:
+            print('Error')
+```
+测试成功截图
+![](img/6.jpg)
+## 三.再做一点点完善
+```python
 import re
 
 import parsel
