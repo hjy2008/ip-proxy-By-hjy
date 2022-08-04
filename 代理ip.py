@@ -40,10 +40,10 @@ def check(ip, port):
                                       requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 30).text)
                 if 'seccess' in response:
                     can.append(proxies)
-                    f.write(proxies)
+                    f.write(str(proxies))
                     print('Success!')
                 elif len(response) == 2:
-                    f.write(proxies)
+                    f.write(str(proxies))
                     can.append(proxies)
                     print(response)
         except requests.exceptions.ProxyError:
