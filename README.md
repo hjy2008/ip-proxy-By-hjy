@@ -185,10 +185,7 @@ def check(ip, port):
         # print(proxies)
 
         try:
-            # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
-            # response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 30) \
-            #     .text.replace(' ', '').split(':')[-1]
-
+            
             response = re.findall(r'<span class="c-red">(.*?)</span>',
                                   requests.get('http://mip.chinaz.com', proxies = proxies, timeout = 1.5).text)
             if len(response) == 2:
