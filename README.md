@@ -131,10 +131,12 @@ def check(ip, port):
         print(proxies)
 
         try:
-            print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
+            # print(requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20).text)
             response = requests.get('http://dev.kdlapi.com/testproxy', proxies = proxies, timeout = 20) \
                 .text.replace(' ', '').split(':')[-1]
-            print('Success!')
+
+            if 'seccess' in response:
+                print('Success!')
         except requests.exceptions.ProxyError:
             print('pass')
         except requests.exceptions.ReadTimeout:
